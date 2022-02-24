@@ -1,0 +1,391 @@
+-- Database: MOVIE_THEATER
+
+-- DROP DATABASE IF EXISTS "MOVIE_THEATER";
+
+CREATE DATABASE "MOVIE_THEATER"
+    WITH 
+    OWNER = natti
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'English_United States.1252'
+    LC_CTYPE = 'English_United States.1252'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1;
+
+
+
+
+
+CREATE TABLE movies (
+	movie_id serial PRIMARY KEY,
+	movie_name VARCHAR(70),
+	movie_country VARCHAR (10),
+	movie_year integer
+);
+
+INSERT INTO movies (movie_id, movie_name, movie_genre, movie_country, movie_year)
+VALUES (1, 'Parasite', 'South Korea', 2019),
+	(2, 'The Queen''s Gambit', 'USA', 2020),
+	(3, 'Train to Busan', 'S. Korea', 2016),
+	(4, 'The Handmaiden', 'S. Korea', 2016),
+	(5, 'The Mad Adventures of Rabbi Jacob', 'France', 1973),
+	(6, 'Fanny and Alexander', 'Sweden', 1982),
+	(7, 'Intouchables', 'France', 2011),
+	(8, 'Knockin''  on Heaven''s Door', 'Germany', 1997),
+	(9, 'Schindler''s List', 'USA', 1993),
+	(10, 'The Godfather', 'USA', 1972),
+	(11, 'Hachi: A Dog''s Tale', 'USA', 2009),
+	(12, 'WALL·E', 'USA', 2008),
+	(13, 'Spirited Away', 'Japan', 2001),
+	(14, 'Coco', 'USA', 2017),
+	(15, 'Requiem for a Dream', 'USA', 2000),
+	(16, 'Life Is Beautiful', 'Italy', 1997),
+	(17, 'Amores perros', 'Mexico', 2000),
+	(18, 'Inception', 'USA', 2010),
+	(19, 'The Bucket List', 'USA', 2007),
+	(20, 'Avatar', 'USA', 2010),
+	(21, 'Nymphomaniac', 'Denmark', 2013)
+
+
+
+
+
+CREATE TABLE genre(
+	genre_id serial PRIMARY KEY,
+	genre_name VARCHAR (15)
+)
+
+INSERT INTO genre (genre_id, genre_name) 
+VALUES (1, 'Animation'),
+	 (2, 'Adventure'),
+	 (3, 'Action'),
+	 (4, 'Biography'),
+	 (5, 'Comedy'),
+	 (6, 'Crime'),
+	 (7, 'Documentary'),
+	 (8, 'Drama'),
+	 (9, 'Family'),
+	 (10, 'Fantasy'),
+	 (11, 'Horror'),
+	 (12, 'History'),
+	 (13, 'Music'),
+	 (14, 'Musical'),
+	 (15, 'Mystery'),
+	 (16, 'News'),
+	 (17, 'Romance'),
+	 (18, 'Sci-Fi'),
+	 (19, 'Sport'),
+	 (20, 'Thriller'),
+	 (21, 'War'),
+	 (22, 'Western')
+RETURNING * ;
+
+
+
+
+
+CREATE TABLE movie_genres (
+	movie_id serial,
+	genre_id serial,
+	CONSTRAINT fk_ToMovies_Togenres FOREIGN KEY (movie_id) REFERENCES movies(movie_id),
+	CONSTRAINT fk_T0Movies_Togenres FOREIGN KEY (genre_id) REFERENCES genre(genre_id)
+);
+	
+INSERT INTO movie_genres ( movie_id, genre_id)
+VALUES  (1,20), (1, 8),
+ 		(2, 12),(2, 8),
+		(3, 2), (3 ,3 ),(3, 8), (3,11),
+		(4, 17), (4, 8) , (4, 20), (4,15),
+		(5, 5 ), (5,3 ),
+		(6, 8), (6, 10),
+		(7, 5), (7,8 ),
+		(8, 3), (8,5),(8,8),
+		(9, 21), (9, 12),(9,8),
+		(10,6),(10, 8), 
+		(11,8),
+		(12, 1),(12,2),(12,5),
+		(13,1), (13,2),(13, 10),(13,15),
+		(14, 1), (14,14),(14, 2),
+		(15, 8), (15, 20),
+		(16, 21 ),(16,5 ),(16,17),(16,8),
+		(17, 8), (17,20),
+		(18, 3),(18,20),(18,2),
+		(19,2), (19,5),(19,8),
+		(20,3), (20,3), (20,10),
+		(21,8)
+
+
+
+
+
+CREATE TABLE merch_stack(
+	merch_id serial PRIMARY KEY,
+	merch_name VARCHAR(30),
+	merch_size VARCHAR (10),
+	merch_price NUMERIC(6,2),
+	merch_color VARCHAR(20),
+	merch_description VARCHAR(200)
+)
+
+INSERT INTO merch_stack (merch_id, merch_name, merch_size,  merch_price, merch_color, merch_description)
+VALUES  (2, 'T-shirt', 'm', '15.99','blue', 'Company logo t-shirt' ),
+		(3, 'T-shirt', 'l', '15.99','blue', 'Company logo t-shirt' ),
+		(4, 'T-shirt', 'xl', '15.99','blue', 'Company logo t-shirt' ),
+		(5, 'Cup', 'medium', '10.99','red', 'Company logo cup' ),
+		(6, 'Baseball hat', 'one-size', '11.99','white', 'Company logo baseball hat' ),
+		(7, 'Baseball hat', 'one-size', '11.99','black', 'Company logo baseball hat' )
+		
+
+
+
+
+CREATE TABLE food_stack(
+	food_id serial PRIMARY KEY,
+	food_name VARCHAR(30),
+	food_size VARCHAR (10),
+	food_price NUMERIC(6,2)
+)
+INSERT INTO food_stack(food_id, food_name, food_size,food_price)
+VALUES (1, 'Popcorn', 'large', '9.99'),
+		(2, 'Popcorn', 'medium', '7.99'),
+		(3,  'Cola', '0.5 litres', '9.99'),
+		(4, 'Chips', 'bag', '4.00'),
+		(5, 'Pretzel', 'large', '15.79'),
+		(7, 'Candy', 'a bag', '5.00')	
+		
+
+
+
+
+CREATE TABLE customer(
+	customer_id serial PRIMARY KEY,
+	first_name VARCHAR(50),
+	last_name VARCHAR (50),
+	email VARCHAR(50),
+	phone VARCHAR(20),
+	address VARCHAR(200)
+)
+
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (1, 'Nikolos', 'Foottit', 'nfoottit0@sohu.com', '375-656-7966', '0 Onsgard Center');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (2, 'Mauricio', 'Richarz', 'mricharz1@whitehouse.gov', '680-783-9000', '5662 Armistice Center');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (3, 'Ferdinande', 'Strathman', 'fstrathman2@slashdot.org', null, '5 Clemons Drive');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (4, 'Olimpia', 'Gerrish', 'ogerrish3@ucoz.ru', '130-308-5114', '88 Dwight Drive');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (5, 'Saleem', 'Skeleton', 'sskeleton4@fotki.com', '431-402-0217', '15 Kedzie Center');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (6, 'Englebert', 'Belhomme', 'ebelhomme5@oracle.com', null, '44731 8th Hill');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (7, 'Norina', 'Scamadine', null, '192-149-0612', '1443 Waywood Parkway');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (8, 'Addy', 'Kippin', 'akippin7@drupal.org', '602-123-2870', '7 Milwaukee Junction');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (9, 'Orelle', 'Mechic', 'omechic8@phpbb.com', null, '5809 Luster Park');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (10, 'Revkah', 'Fumagallo', 'rfumagallo9@sina.com.cn', '960-870-0612', '7 Loeprich Terrace');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (11, 'Nelle', 'McDougal', 'nmcdougala@si.edu', '369-432-4401', '32 Main Plaza');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (12, 'Ignacius', 'Casbolt', 'icasboltb@mlb.com', '400-965-8711', '380 Springs Place');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (13, 'Sayer', 'Ragat', 'sragatc@toplist.cz', '833-319-8010', '0686 Sycamore Avenue');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (14, 'Murvyn', 'Bloomfield', 'mbloomfieldd@fema.gov', '228-274-5015', '62 Hoard Plaza');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (15, 'Sigismondo', 'Gratrex', 'sgratrexe@gmpg.org', null, '2 Crest Line Avenue');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (16, 'Gwendolyn', 'MacCafferty', 'gmaccaffertyf@creativecommons.org', '251-739-0052', '11043 Gerald Circle');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (17, 'Ameline', 'Terbeek', 'aterbeekg@github.com', null, '162 Northridge Point');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (18, 'Peggy', 'Hulks', 'phulksh@cbslocal.com', '646-719-2368', '13 Warbler Crossing');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (19, 'Maurene', 'Robottham', 'mrobotthami@friendfeed.com', null, '1304 Melrose Point');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (20, 'Arley', 'Morriss', null, '659-772-2421', '67 Grayhawk Place');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (21, 'Daphne', 'Serrels', 'dserrelsk@canalblog.com', '611-484-6578', '024 3rd Street');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (22, 'Armin', 'Smewings', 'asmewingsl@go.com', '636-679-1951', '6214 Southridge Junction');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (23, 'Katusha', 'Guildford', 'kguildfordm@nature.com', '391-522-3151', '2 Mcguire Junction');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (24, 'Liliane', 'Floyd', null, '226-834-7230', '1447 Arkansas Parkway');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (25, 'Katherina', 'Haggith', 'khaggitho@qq.com', null, '22257 Mallard Parkway');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (26, 'Janeva', 'Buey', 'jbueyp@e-recht24.de', '782-687-9228', '1 Brentwood Trail');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (27, 'Franciskus', 'Vogeler', null, '101-671-8088', '649 Surrey Street');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (28, 'Annetta', 'Whisker', null, null, '600 Chive Crossing');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (29, 'Rodi', 'Arzu', 'rarzus@trellian.com', '996-622-1371', '01 Atwood Court');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (30, 'Stephannie', 'Aland', 'salandt@github.io', '994-618-9521', '02107 Browning Circle');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (31, 'Sonya', 'Kilbey', 'skilbeyu@alexa.com', '807-432-1984', '335 Florence Center');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (32, 'Jyoti', 'Woodman', 'jwoodmanv@ask.com', '105-399-6359', '1 Scoville Point');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (33, 'Ediva', 'Hazel', null, null, '3873 Blue Bill Park Place');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (34, 'Simone', 'O'' Faherty', null, '473-215-1321', '22 Commercial Alley');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (35, 'Sanford', 'Dimitrescu', 'sdimitrescuy@surveymonkey.com', '575-737-9221', '5612 Mendota Place');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (36, 'Stevie', 'Mulgrew', 'smulgrewz@slideshare.net', '537-564-4212', '43394 Briar Crest Crossing');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (37, 'Arlyne', 'Blindermann', 'ablindermann10@census.gov', '582-951-7815', '168 Killdeer Junction');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (38, 'Turner', 'Beseke', null, null, '6357 Talisman Street');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (39, 'Stephana', 'Dufaur', 'sdufaur12@blinklist.com', '650-991-6820', '851 Anhalt Court');
+insert into customer (customer_id, first_name, last_name, email, phone, address) values (40, 'Eb', 'Flemyng', 'eflemyng13@newyorker.com', '493-886-5810', '067 Wayridge Junction');
+
+
+
+
+
+CREATE TABLE employee(
+	employee_id serial PRIMARY KEY,
+	ssn VARCHAR(11),
+	first_name VARCHAR(50),
+	last_name VARCHAR (50),
+	email VARCHAR(50),
+	phone VARCHAR(20),
+	address VARCHAR(200)
+)
+
+insert into employee (employee_id, first_name, last_name, email, phone, address, ssn) values (1, 'Lula', 'Gawne', 'lgawne0@ebay.co.uk', '185-216-9909', '15 Express Plaza', '629-23-0892');
+insert into employee (employee_id, first_name, last_name, email, phone, address, ssn) values (2, 'Gennifer', 'Curtiss', 'gcurtiss1@moonfruit.com', '825-275-2433', '86 Redwing Court', '819-78-3257');
+insert into employee (employee_id, first_name, last_name, email, phone, address, ssn) values (3, 'Phillipe', 'Fancet', 'pfancet2@netlog.com', '861-259-0957', '1 Maryland Avenue', '155-20-6757');
+insert into employee (employee_id, first_name, last_name, email, phone, address, ssn) values (4, 'Harland', 'Lindberg', 'hlindberg3@scientificamerican.com', '358-149-6513', '1894 Jana Avenue', '407-62-4750');
+insert into employee (employee_id, first_name, last_name, email, phone, address, ssn) values (5, 'Gusti', 'Fletham', 'gfletham4@economist.com', '940-291-4921', '83 Express Place', '285-42-4260');
+
+
+
+
+
+CREATE TABLE tickets_price(
+	movie_price_id serial PRIMARY KEY,
+	show_time VARCHAR(5),
+	age VARCHAR(10),
+	price NUMERIC (5,2)
+)
+
+insert into tickets_price(movie_price_id, show_time, age, price)
+values(1, '10 PM', 'childrens', '7.00'),
+	(2, '10 PM', 'adults 13+', '10.00'),
+	(3, '10 PM', 'seniors', '9.00'),
+	(4, '2 PM', 'childrens', '7.50'),
+	(5, '2 PM', 'adults 13+', '10.50'),
+	(6, '2 PM', 'seniors', '9.50'),
+	(7, '7 PM', 'childrens', '10.00'),
+	(8, '7 PM', 'adults 13+', '15.00'),
+	(9, '7 PM', 'seniors', '13.00')
+
+
+
+
+
+CREATE TABLE ticket_order (
+	ticket_order_id serial PRIMARY KEY,
+	movie_price_id serial,
+	movie_id serial,
+	quantity integer NOT NULL,
+	total NUMERIC(7,2),
+	CONSTRAINT fk_Price_forMovie FOREIGN KEY (movie_price_id) REFERENCES tickets_price(movie_price_id),
+	CONSTRAINT fk_ToMovies_Togenres FOREIGN KEY (movie_id) REFERENCES movies(movie_id)
+);
+
+INSERT INTO ticket_order (ticket_order_id, movie_price_id, movie_id, quantity, total)
+VALUES (1, 8, 3, '5','75.00')
+INSERT INTO ticket_order (ticket_order_id, movie_price_id, movie_id, quantity, total)
+VALUES (2, 1, 12, '4','28.00'),
+	(3, 2, 12, '2','20.00'),	
+	(4, 6, 17, '1','9.50'),
+	(5, 8, 2, '6','90.00'),
+	(6, 9, 5, '5','65.00'),
+	(7, 5, 8, '3','31.50'),
+	(8, 4, 11, '7','52.50'),
+	(9, 5, 11, '2','21.00'),	
+	(10, 8, 9, '2','30.00'),	
+	(11, 7, 14, '1','10.00'),	
+	(12, 8, 14, '1','15.00'),	
+	(13, 8, 4, '3','45.00'),
+	(14, 9, 4, '4','52.00'),	
+	(15, 5, 16, '3','31.50'),	
+	(16, 8, 4, '1','15.00'),
+	(17, 8, 6, '4','60.00'),
+	(18, 9, 16, '5','39.00'),
+	(19, 9, 21, '2','26.00')
+
+
+
+
+
+CREATE TABLE merch_order (
+	merch_order_id serial PRIMARY KEY,
+	merch_id serial,
+	quantity integer NOT NULL,
+	total NUMERIC(7,2),
+	CONSTRAINT fk_Price_forMerch FOREIGN KEY (merch_id) REFERENCES merch_stack(merch_id)
+);
+
+INSERT INTO merch_order(merch_order_id, merch_id, quantity, total)
+VALUES (1, 2, '3','47.97'),
+		(2, 4, '2','31.98'),
+		(3, 5, '1','10.99'),
+		(4, 3, '3','47.97'),
+		(5, 7, '3','35.97'),
+		(6, 2, '2','31.98'),
+		(7, 3, '1','15.99'),
+		(8, 1, '1','15.99'),
+		(9, 1, '3','47.97'),
+		(10, 2, '3','47.97'),
+		(11, 6, '4','47.96'),
+		(12, 5, '1','10.99'),
+		(13, 1, '1','15.99')
+
+
+
+
+		
+CREATE TABLE food_order (
+	food_order_id serial PRIMARY KEY,
+	food_id serial,
+	quantity integer NOT NULL,
+	total NUMERIC(7,2),
+	CONSTRAINT fk_Price_forFood FOREIGN KEY (food_id) REFERENCES food_stack(food_id)
+);
+
+insert into food_order (food_order_id, food_id, quantity, total)
+VALUES (1, 1,'3','29.97'),
+	(2, 3,'3','29.97'),
+	(3, 4,'1','4.00'),
+	(4, 1,'3','29.97'),
+	(5, 7,'6','30.00'),
+	(6, 3,'1','9.99'),
+	(7, 1,'2','19.98'),
+	(8, 3,'5','49.95'),
+	(9, 4,'4','16.00')
+
+
+
+
+	
+CREATE TABLE payment_types (
+	payment_type_id serial PRIMARY KEY,
+	payment_name VARCHAR (50)
+);
+
+INSERT INTO payment_types(payment_type_id, payment_name)
+VALUES(1,'online official website'),
+		(2, 'online affiliate websites'),
+		(3, 'a walk-in customer')
+
+
+
+
+
+CREATE TABLE payment_options (
+	payment_options_id serial PRIMARY KEY,
+	option_name VARCHAR (50)
+);
+
+INSERT INTO payment_options(payment_options_id, option_name)
+VALUES(1, 'Debit Card'),
+(2, 'Credit Card'),
+(3, 'Cash'),
+(4, 'Apple Wallet'),
+(5,'Samsung Wallet'),
+(6, 'Other Options ')
+
+
+
+
+
+CREATE TABLE payment_details(
+	payment_id serial PRIMARY KEY,
+	ticket_order_id serial,
+	food_order_id serial,
+	merch_order_id serial,
+	payment_options_id serial,
+	payment_type_id serial,
+	employee_id serial,
+	customer_id serial,
+	datetime DATE,
+	datetime_time VARCHAR(50),
+	total_price NUMERIC(10,2),
+	CONSTRAINT fk_TotalOrderPriceForTicket FOREIGN KEY (ticket_order_id) REFERENCES ticket_order(ticket_order_id),
+	CONSTRAINT fk_TotalOrderPriceForFood FOREIGN KEY (food_order_id) REFERENCES food_order(food_order_id),
+	CONSTRAINT fk_TotalOrderPriceForMerch FOREIGN KEY (merch_order_id) REFERENCES merch_order(merch_order_id),
+	CONSTRAINT fk_Payments_Options FOREIGN KEY (payment_options_id) REFERENCES payment_options(payment_options_id),
+	CONSTRAINT fk_Payments_Types FOREIGN KEY (payment_type_id) REFERENCES payment_types(payment_type_id),
+	CONSTRAINT fk_EmployeesData FOREIGN KEY (employee_id) REFERENCES employee(employee_id),
+	CONSTRAINT fk_CustomersData FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
+)
