@@ -8,4 +8,4 @@
 
 # an Example
 
-![example](https://raw.githubusercontent.com/n-eaton/Movie_Theater_SQL_ERD/main/example.png?token=GHSAT0AAAAAABRRI34GXENSGFSIG2ZDIC72YQXGLOQ)
+![example](https://raw.githubusercontent.com/n-eaton/Movie_Theater_SQL_ERD/main/example.png?token=GHSAT0AAAAAABRRI34G33SP2W4S7BVK4O3UYQXI2CA)
